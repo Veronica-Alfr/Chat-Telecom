@@ -1,4 +1,4 @@
-import Joi = require("joi");
+import Joi from "joi";
 
 const fieldsMissing = 'All fields must be filled';
 
@@ -7,7 +7,7 @@ export const validateUser = (body: object) => {
     email: Joi.string().email().required().messages({
         'string.empty': fieldsMissing,
     }),
-    password: Joi.string().required().min(7).messages({
+    password: Joi.string().required().min(6).messages({
         'string.empty': fieldsMissing,
         'string.required': fieldsMissing,
     })
@@ -16,9 +16,9 @@ export const validateUser = (body: object) => {
   const { error, value } = schemaUser.validate(body);
 
     if (error) {
-        const e = new Error(error.details[0].message);
-        e.name = 'BadRequest';
-        throw e;
+        const err = new Error(error.details[0].message);
+        err.name = 'BadRequest';
+        throw err;
     }
 
     return value;

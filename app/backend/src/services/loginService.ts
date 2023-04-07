@@ -1,6 +1,5 @@
 import User from "../models/user";
 import { JwtService } from "./jwtService";
-import { compareSync } from 'bcryptjs';
 
 export default class LoginService {
     public login = async (email: string, password: string): Promise<string> => {  
@@ -8,11 +7,18 @@ export default class LoginService {
        where: { email },
     });
 
-    if (!user || !compareSync(password, user.password)) {
-        const e = new Error('Incorrect email or password');
-        e.name = 'Unauthorized';
-        throw e;
+    if (!user) {
+      const err = new Error('You are not registered!');
+      err.name = 'Unauthorized';
+      throw err;
     }
+
+    if (user.email && user.password !== password) {
+      const err = new Error('Incorrect email or password');
+      err.name = 'Unauthorized';
+      throw err;
+    }
+
     const  { id } = user;
     const token = JwtService.sign({ id, email });
 

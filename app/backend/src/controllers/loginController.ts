@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { validateUser } from "../middlewares/validations/schemaLogin";
+import { validateUser } from "../middlewares/validations/schemaUser";
 import ILogin from '../interfaces/ILogin';
 import ILoginService from '../interfaces/ILoginService';
 
