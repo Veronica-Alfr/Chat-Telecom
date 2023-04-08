@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUser, setToken } from '../services/login';
+import { registerUser, setToken } from '../services/user';
 import { register } from '../store/features/user';
 import registerValidate from '../validations/register';
 import { useAppDispatch } from '../store/store';
@@ -21,7 +21,7 @@ export default function Register() {
     const handleSubmitRegister = async () => {
     try {
         dispatch(register({ name, email, password }));
-        const { token } = await createUser({ name, email, password });
+        const { token } = await registerUser({ name, email, password });
 
         setToken(token);
         localStorage.setItem('token',  token);
