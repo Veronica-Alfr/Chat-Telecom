@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUser } from '../services/login';
+import { createUser, setToken } from '../services/login';
 import { register } from '../store/features/user';
 import registerValidate from '../validations/register';
 import { useAppDispatch } from '../store/store';
@@ -20,13 +20,16 @@ export default function Register() {
 
     const handleSubmitRegister = async () => {
     try {
-        const newUser = { name, email, password };
-        await createUser(newUser);
-        dispatch(register(newUser));
-        console.log('Usuario criado e disparado!')
+        dispatch(register({ name, email, password }));
+        const { token } = await createUser({ name, email, password });
+
+        setToken(token);
+        localStorage.setItem('token',  token);
+
         navigate('/chat');
-    } catch (err) {
-        setError('User already registered'); // capturar errors não customizados
+    } catch (error: any) {
+        if (error.response?.status === 409) return setError('User already registered!');
+        setError(`Error: ${error.message}`);
       }
     }
 

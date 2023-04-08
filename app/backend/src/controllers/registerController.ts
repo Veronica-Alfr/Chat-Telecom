@@ -8,6 +8,7 @@ export default class RegisterController {
     constructor(private registerService: IRegisterService) {}
 
     async create(req: Request, res: Response): Promise<object> {
+        console.log(req.body)
         const registerBody: IRegister = validateRegister(req.body);
 
         const user = await this.registerService.create(registerBody);

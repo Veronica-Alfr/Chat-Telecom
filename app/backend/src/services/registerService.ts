@@ -1,7 +1,6 @@
 import User from "../models/user";
 import IUser from "../interfaces/IRegister";
 import { IRegisterService } from "../interfaces/IRegisterService";
-import { JwtService } from "../helpers/jwtSign";
 
 export default class RegisterService implements IRegisterService {
     create = async ({ name, email, password }: IUser): Promise<User> => {
@@ -11,7 +10,7 @@ export default class RegisterService implements IRegisterService {
         });
     
         if (userExisted) {
-            const err = new Error('User already registered');
+            const err = new Error('User already registered!');
             err.name = 'UserExistError';
             throw err;
         }
