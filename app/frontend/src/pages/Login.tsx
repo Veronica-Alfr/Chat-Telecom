@@ -1,52 +1,53 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { registerUser, setToken } from '../services/user';
-import { register } from '../store/features/user';
-import registerValidate from '../validations/register';
-import { useAppDispatch } from '../store/store';
+import { loginUser, requestData, setToken } from "../services/user";
+import registerOrLoginValidate from "../validations/register";
+import { useAppDispatch } from "../store/store";
+import { login } from "../store/features/user";
 
-export default function Register() {
+export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
     const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
     const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-    const handleSubmitRegister = async () => {
+    const isButtonDisabled = () => (
+        !registerOrLoginValidate.validateEmail(email)
+        || !registerOrLoginValidate.validatePassword(password)
+    );
+
+  const handleLogin = async () => {
     try {
-        dispatch(register({ name, email, password }));
-        const { token } = await registerUser({ name, email, password });
+        dispatch(login({ email, password }))
+        const { token } = await loginUser('/login', { email, password });
 
         setToken(token);
+
+        const { email: Email } = await requestData('/login/validate');
+
         localStorage.setItem('token',  token);
+        localStorage.setItem('email',  Email);
 
         navigate('/chat');
     } catch (error: any) {
-        if (error.response?.status === 409) return setError('User already registered!');
-        setError(`Error: ${error.message}`);
-      }
-    }
+        if (error.response?.status === 401) {
+            if (error.response.statusText === 'Unauthorized' && error.response.data.message.includes('password')) {
+              return setError('Your password is incorrect.');
+            }
 
-    const isButtonDisabled = () => (
-        !registerValidate.validateEmail(email)
-        || !registerValidate.validatePassword(password)
-        || !registerValidate.validateName(name)
-    );
+            return setError('You are not registered or your email is incorrect.');
+        }
+        return setError(`Error: ${error.message}`);
+    }
+  };
 
   return(
-    <div>
-        <input
-            placeholder="Your name"
-            onChange={ handleChangeName }
-            type="text"
-            value={ name }
-        />
+    <form>
         <input
             placeholder="Email"
             onChange={ handleChangeEmail }
@@ -62,10 +63,10 @@ export default function Register() {
         <div>
             <button
             type="button"
-            onClick={ handleSubmitRegister }
+            onClick={ handleLogin }
             disabled={ isButtonDisabled() }
             >
-                REGISTER
+                Login
             </button>
             {error && (
             <span>
@@ -73,6 +74,6 @@ export default function Register() {
             </span>
             )}
         </div>
-    </div>
+    </form>
   )
 }
