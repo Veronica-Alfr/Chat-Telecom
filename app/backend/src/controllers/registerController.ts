@@ -1,26 +1,21 @@
 import { Request, Response } from "express";
-import { validateUser } from "../middlewares/validations/schemaUser";
-import { IRegisterService } from "../interfaces/IUserService";
-import ILoginService from "../interfaces/ILoginService";
-import ILogin from "../interfaces/ILogin";
+import { validateRegister } from "../middlewares/validations/schemaRegister";
+import { IRegisterService } from "../interfaces/IRegisterService";
+import IRegister from "../interfaces/IRegister";
+import { JwtService } from '../helpers/jwtSign';
 
 export default class RegisterController {
-    constructor(private registerService: IRegisterService, private loginService: ILoginService) {}
+    constructor(private registerService: IRegisterService) {}
 
-    async create(req: Request, res: Response): Promise<object>{
-        const userCreate = validateUser(req.body);
+    async create(req: Request, res: Response): Promise<object> {
+        const registerBody: IRegister = validateRegister(req.body);
 
-        if (!userCreate.error) {
-            const user = await this.registerService.create(userCreate);
+        const user = await this.registerService.create(registerBody);
 
-            const loginBody: ILogin = validateUser(req.body);
+        const { id, email } = user;
 
-            const token = await this.loginService.login(loginBody.email, loginBody.password);
+        const token = JwtService.sign({ id, email });
 
-            return res.status(201).json({ token });
-        }
-            const err = new Error(userCreate.error.message);
-            err.name = 'UnauthorizedError';
-            throw err;
-        }
+        return res.status(201).json({ token });
+    }
 }

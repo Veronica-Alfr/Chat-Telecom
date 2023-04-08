@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import LoginController from '../controllers/loginController';
 import LoginService from '../services/loginService';
-import Jwt from '../middlewares/token/tokenVerify';
+import Jwt from '../helpers/jwtVerifyToken';
 
 const loginRouter = Router();
 

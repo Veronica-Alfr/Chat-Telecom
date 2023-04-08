@@ -1,9 +1,10 @@
 import User from "../models/user";
-import IUser from "../interfaces/IUser";
-import { IRegisterService } from "../interfaces/IUserService";
+import IUser from "../interfaces/IRegister";
+import { IRegisterService } from "../interfaces/IRegisterService";
+import { JwtService } from "../helpers/jwtSign";
 
 export default class RegisterService implements IRegisterService {
-    create = async ({ email, password }: IUser): Promise<User> => {
+    create = async ({ name, email, password }: IUser): Promise<User> => {
 
         const userExisted = await User.findOne({
             where: { email },
@@ -15,7 +16,7 @@ export default class RegisterService implements IRegisterService {
             throw err;
         }
 
-        const userCreate = await User.create({ email, password });
+        const userCreate = await User.create({ name, email, password });
 
         return userCreate;
     }

@@ -4,7 +4,7 @@
         "es2021": true
     },
     "extends": [
-        "eslint: trybe-frontend",
+        "eslint:@trybe/eslint-config-frontend",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
     ],

@@ -2,9 +2,12 @@ import Joi from "joi";
 
 const fieldsMissing = 'All fields must be filled';
 
-export const validateUser = (body: object) => {
-    const schemaUser = Joi.object({
-    email: Joi.string().email().required().messages({
+export const validateRegister = (body: object) => {
+    const schemaRegister = Joi.object({
+    name: Joi.string().required().min(6).messages({
+        'string.empty': fieldsMissing,
+    }),     
+    email: Joi.string().regex(/(.+)@(.+){2,}\.(.+){2,}/).required().messages({
         'string.empty': fieldsMissing,
     }),
     password: Joi.string().required().min(6).messages({
@@ -13,7 +16,7 @@ export const validateUser = (body: object) => {
     })
 });
 
-  const { error, value } = schemaUser.validate(body);
+  const { error, value } = schemaRegister.validate(body);
 
     if (error) {
         const err = new Error(error.details[0].message);

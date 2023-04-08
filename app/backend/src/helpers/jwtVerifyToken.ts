@@ -6,7 +6,7 @@ export default class Jwt {
     
     static verifyToken  = (req: Request, _res: Response, next: NextFunction) => {
         const token = req.headers.authorization as string;
-        const secret = process.env.JWT_SECRET || "";
+        const secret = process.env.JWT_SECRET || "secret";
 
         try {
             const data = jwt.verify(token, secret);
