@@ -9,6 +9,7 @@ export const validateMessage = (body: object) => {
     }),
     roomId: Joi.number().required(),
     message: Joi.string().required(),
+    time: Joi.string().required(),
 });
 
   const { error, value } = schemaMessage.validate(body); // criar um helpers para essa parte

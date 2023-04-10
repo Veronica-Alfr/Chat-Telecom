@@ -27,8 +27,12 @@ Chat.init({
     type: STRING,
     allowNull: false,
   },
+  time: {
+    type: STRING,
+    allowNull: false,
+  }
 }, {
-  timestamps: true,
+  timestamps: false,
   sequelize: db
 });
 

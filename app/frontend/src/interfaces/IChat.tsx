@@ -1,6 +1,6 @@
 export interface IChat {
-    roomId: number,
-    name: string,
+    roomId: number | null,
+    name: string | null,
     message: string,
     time: string
 }

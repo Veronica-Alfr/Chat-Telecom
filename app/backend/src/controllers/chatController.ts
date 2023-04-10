@@ -7,7 +7,6 @@ export default class ChatController {
     constructor(private messageService: IChatService) {}
 
     async create(req: Request, res: Response): Promise<object> {
-        console.log(req.body)
         const chatBody: IChat = validateMessage(req.body);
 
         const chat = await this.messageService.create(chatBody);

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import socket from "../services/socket/socket";
 import { loginUser, requestData, setToken } from "../services/user";
 import registerOrLoginValidate from "../validations/register";
 import { useAppDispatch } from "../store/store";
@@ -37,8 +36,6 @@ export const Login = () => {
         localStorage.setItem('token',  token);
         localStorage.setItem('email',  Email);
         localStorage.setItem('roomId', String(roomId));
-
-        socket.emit("join_room", roomId);
 
         navigate('/chat');
     } catch (error: any) {

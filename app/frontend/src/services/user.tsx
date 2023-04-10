@@ -2,6 +2,7 @@ import axios from 'axios';
 import { IRegister } from '../interfaces/IRegister';
 import { IUserData } from '../interfaces/IUserData';
 import { ILogin } from '../interfaces/ILogin';
+import { IChat } from '../interfaces/IChat';
 
 const url = 'http://localhost:3001';
 
@@ -26,6 +27,11 @@ export const loginUser = async (endpoint: string, { email, password }: ILogin): 
 export const registerUser = async ({ name, email, password }: IRegister): Promise<IUserData> => {
     const { data } = await instance.post('/register', { name, email, password });
     return data;
+}
+
+export const chatData = async ({ name, roomId, message, time }: IChat) => {
+  const { data } = await instance.post('/chat', { name, roomId, message, time });
+  return data;
 }
 
 export default instance;
