@@ -82,6 +82,12 @@ export const Login = () => {
                 {error}
             </span>
             )}
+            <button
+                type="button"
+                onClick={ () => navigate('/register')}
+            >
+                Cadastrar
+            </button>
         </div>
     </form>
   )
