@@ -12,7 +12,7 @@ export const validateMessage = (body: object) => {
     time: Joi.string().required(),
 });
 
-  const { error, value } = schemaMessage.validate(body); // criar um helpers para essa parte
+  const { error, value } = schemaMessage.validate(body);
 
     if (error) {
         const err = new Error(error.details[0].message);

@@ -20,7 +20,7 @@ const userLogin = createSlice({
   },
 });
 
-const initialStateRegister: IRegister = { // jogar tudo em um array?
+const initialStateRegister: IRegister = {
     name: '',
     email: '',
     password: ''

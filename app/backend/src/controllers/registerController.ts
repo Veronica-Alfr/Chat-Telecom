@@ -14,7 +14,7 @@ export default class RegisterController {
 
         const { id, email, roomId } = user;
 
-        const token = JwtService.sign({ id, email, roomId}); // qualquer coisa retire roomId do Jwt
+        const token = JwtService.sign({ id, email, roomId});
 
         return res.status(201).json({ token });
     }
