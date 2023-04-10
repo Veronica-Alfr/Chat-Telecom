@@ -3,8 +3,10 @@ import { IRegister } from '../interfaces/IRegister';
 import { IUserData } from '../interfaces/IUserData';
 import { ILogin } from '../interfaces/ILogin';
 
+const url = 'http://localhost:3001';
+
 const instance = axios.create({
-  baseURL: 'http://localhost:3001'
+  baseURL: url,
 });
 
 export const setToken = (token: string) => {

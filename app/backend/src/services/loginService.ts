@@ -2,7 +2,7 @@ import User from "../models/user";
 import { JwtService } from "../helpers/jwtSign";
 
 export default class LoginService {
-    public login = async (email: string, password: string): Promise<string> => {  
+    public login = async (email: string, password: string, roomId: number): Promise<string> => {  
        const user = await User.findOne({
        where: { email },
     });
@@ -20,7 +20,7 @@ export default class LoginService {
     }
 
     const  { id } = user;
-    const token = JwtService.sign({ id, email });
+    const token = JwtService.sign({ id, email, roomId });
 
     return token;
   }

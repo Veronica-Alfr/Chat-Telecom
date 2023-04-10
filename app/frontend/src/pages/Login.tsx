@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import socket from "../services/socket/socket";
 import { loginUser, requestData, setToken } from "../services/user";
 import registerOrLoginValidate from "../validations/register";
 import { useAppDispatch } from "../store/store";
@@ -11,20 +12,23 @@ export const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [roomId, setRoom] = useState(0);
     const [error, setError] = useState('');
 
     const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
     const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
+    const handleJoinRoom = (e: React.ChangeEvent<HTMLInputElement>) => setRoom(Number(e.target.value));
 
     const isButtonDisabled = () => (
         !registerOrLoginValidate.validateEmail(email)
         || !registerOrLoginValidate.validatePassword(password)
+        || !registerOrLoginValidate.validateRoom(roomId)
     );
 
   const handleLogin = async () => {
     try {
-        dispatch(login({ email, password }))
-        const { token } = await loginUser('/login', { email, password });
+        dispatch(login({ email, password, roomId }))
+        const { token } = await loginUser('/login', { email, password, roomId });
 
         setToken(token);
 
@@ -32,6 +36,9 @@ export const Login = () => {
 
         localStorage.setItem('token',  token);
         localStorage.setItem('email',  Email);
+        localStorage.setItem('roomId', String(roomId));
+
+        socket.emit("join_room", roomId);
 
         navigate('/chat');
     } catch (error: any) {
@@ -60,6 +67,11 @@ export const Login = () => {
             type="password"
             value={ password }
         />
+        <input
+            type="text"
+            placeholder="Room ID"
+            onChange={ handleJoinRoom }
+          />
         <div>
             <button
             type="button"

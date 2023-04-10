@@ -8,14 +8,13 @@ export default class RegisterController {
     constructor(private registerService: IRegisterService) {}
 
     async create(req: Request, res: Response): Promise<object> {
-        console.log(req.body)
         const registerBody: IRegister = validateRegister(req.body);
 
         const user = await this.registerService.create(registerBody);
 
-        const { id, email } = user;
+        const { id, email, roomId } = user;
 
-        const token = JwtService.sign({ id, email });
+        const token = JwtService.sign({ id, email, roomId}); // qualquer coisa retire roomId do Jwt
 
         return res.status(201).json({ token });
     }

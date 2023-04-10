@@ -1,10 +1,11 @@
-import { INTEGER, Model, STRING } from 'sequelize';
+import { INTEGER, Model, STRING, ARRAY } from 'sequelize';
 import db from '.';
 
 class User extends Model {
   id!: number;
   email!: string;
   password!: string;
+  roomId!: number;
 }
 
 User.init({
@@ -26,6 +27,10 @@ User.init({
     type: STRING,
     allowNull: false,
   },
+  roomId: {
+    type: INTEGER,
+    allowNull: true,
+  }
 }, {
   timestamps: false,
   sequelize: db

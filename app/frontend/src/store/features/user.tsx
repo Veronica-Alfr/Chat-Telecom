@@ -4,16 +4,18 @@ import { IRegister } from '../../interfaces/IRegister';
 
 const initialStateLogin: ILogin = {
     email: '',
-    password: ''
+    password: '',
+    roomId: 0,
 }
 
 const userLogin = createSlice({
   name: 'login',
   initialState: initialStateLogin,
   reducers: {
-    login: (state, action) => {
+    login: (state, action: PayloadAction<{ email: string, password: string, roomId: number }>) => {
       state.email = action.payload.email;
       state.password = action.payload.password;
+      state.roomId = action.payload.roomId;
     },
   },
 });

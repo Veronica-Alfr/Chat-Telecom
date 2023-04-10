@@ -1,5 +1,6 @@
 export default interface ILogin {
     id: number,
     email: string,
-    password: string
+    password: string,
+    roomId: number,
 }

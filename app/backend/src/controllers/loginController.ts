@@ -9,7 +9,7 @@ export default class LoginController {
 
         const loginBody: ILogin = req.body;
 
-        const token = await this.loginService.login(loginBody.email, loginBody.password);
+        const token = await this.loginService.login(loginBody.email, loginBody.password, loginBody.roomId);
 
         return res.status(200).json({ token });
    }

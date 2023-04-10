@@ -25,8 +25,9 @@ export const Register = () => {
 
         setToken(token);
         localStorage.setItem('token',  token);
+        localStorage.setItem('name', name);
 
-        navigate('/chat');
+        navigate('/login');
     } catch (error: any) {
         if (error.response?.status === 409) return setError('User already registered!');
 
